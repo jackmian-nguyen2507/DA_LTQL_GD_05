@@ -21,10 +21,13 @@ namespace QuanLyQuanCaPhe.Data
         public DbSet<NguyenLieu> NguyenLieu { get; set; }
         public DbSet<KhachHang> KhachHang { get; set; }
         public DbSet<NhanVien> NhanVien { get; set; }
+        public DbSet<DonVi> DonVi { get; set; }
         public DbSet<TaiKhoan> TaiKhoan { get; set; }
         public DbSet<ChamCong> ChamCong { get; set; }
         public DbSet<CaLam> CaLam { get; set; }
         public DbSet<BangLuong> BangLuong { get; set; }
+
+        public DbSet<InventoryMovements> InventoryMovements { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -250,12 +253,32 @@ namespace QuanLyQuanCaPhe.Data
                 entity.Property(e => e.TenNL)
                       .HasMaxLength(300);
 
-                entity.Property(e => e.DonVi)
-                      .HasMaxLength(60);
+                entity.Property(e => e.MaDonVi)
+                      .IsRequired();
 
                 entity.Property(e => e.SoLuongTon)
                       .HasColumnType("decimal(12,3)")
                       .HasDefaultValue(0m);
+
+                // 🔥 FK -> DonVi
+                entity.HasOne(d => d.DonVi)
+                      .WithMany(p => p.NguyenLieu)
+                      .HasForeignKey(d => d.MaDonVi)
+                      .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<DonVi>(entity =>
+            {
+                entity.ToTable("DonVi");
+
+                entity.HasKey(e => e.MaDonVi);
+
+                entity.Property(e => e.MaDonVi)
+                      .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.TenDonVi)
+                      .IsRequired()
+                      .HasMaxLength(50);
             });
 
             modelBuilder.Entity<InventoryMovements>(entity =>

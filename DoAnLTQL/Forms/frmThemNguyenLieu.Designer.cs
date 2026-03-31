@@ -35,17 +35,18 @@
             lblSoLuong = new Label();
             txtMaNL = new TextBox();
             txtTenNL = new TextBox();
-            txtDonVi = new TextBox();
             numSoLuong = new NumericUpDown();
             btnLuu = new Button();
             btnHuy = new Button();
+            cboDonVi = new ComboBox();
+            btnThemDonVi = new Button();
             ((System.ComponentModel.ISupportInitialize)numSoLuong).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
             // 
             lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitle.Location = new Point(25, 15);
+            lblTitle.Location = new Point(85, 19);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(350, 40);
             lblTitle.TabIndex = 0;
@@ -101,13 +102,6 @@
             txtTenNL.Size = new Size(220, 29);
             txtTenNL.TabIndex = 4;
             // 
-            // txtDonVi
-            // 
-            txtDonVi.Location = new Point(140, 176);
-            txtDonVi.Name = "txtDonVi";
-            txtDonVi.Size = new Size(220, 29);
-            txtDonVi.TabIndex = 6;
-            // 
             // numSoLuong
             // 
             numSoLuong.Location = new Point(140, 226);
@@ -120,32 +114,58 @@
             // 
             btnLuu.BackColor = Color.DarkGreen;
             btnLuu.ForeColor = Color.White;
-            btnLuu.Location = new Point(70, 300);
+            btnLuu.Location = new Point(70, 353);
             btnLuu.Name = "btnLuu";
             btnLuu.Size = new Size(120, 40);
             btnLuu.TabIndex = 9;
             btnLuu.Text = "Lưu";
             btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.Click += btnLuu_Click;
             // 
             // btnHuy
             // 
-            btnHuy.Location = new Point(220, 300);
+            btnHuy.BackColor = Color.Red;
+            btnHuy.ForeColor = Color.White;
+            btnHuy.Location = new Point(269, 353);
             btnHuy.Name = "btnHuy";
             btnHuy.Size = new Size(120, 40);
             btnHuy.TabIndex = 10;
             btnHuy.Text = "Hủy";
+            btnHuy.UseVisualStyleBackColor = false;
             btnHuy.Click += btnCancel_Click;
+            // 
+            // cboDonVi
+            // 
+            cboDonVi.FormattingEnabled = true;
+            cboDonVi.Location = new Point(140, 180);
+            cboDonVi.Name = "cboDonVi";
+            cboDonVi.Size = new Size(220, 29);
+            cboDonVi.TabIndex = 11;
+            // 
+            // btnThemDonVi
+            // 
+            btnThemDonVi.BackColor = Color.Transparent;
+            btnThemDonVi.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnThemDonVi.ForeColor = Color.Green;
+            btnThemDonVi.Location = new Point(381, 180);
+            btnThemDonVi.Name = "btnThemDonVi";
+            btnThemDonVi.Size = new Size(37, 29);
+            btnThemDonVi.TabIndex = 12;
+            btnThemDonVi.Text = "+";
+            btnThemDonVi.UseVisualStyleBackColor = false;
+            btnThemDonVi.Click += btnThemDonVi_Click;
             // 
             // frmThemNguyenLieu
             // 
-            ClientSize = new Size(400, 370);
+            ClientSize = new Size(447, 427);
+            Controls.Add(btnThemDonVi);
+            Controls.Add(cboDonVi);
             Controls.Add(lblTitle);
             Controls.Add(lblMaNL);
             Controls.Add(txtMaNL);
             Controls.Add(lblTenNL);
             Controls.Add(txtTenNL);
             Controls.Add(lblDonVi);
-            Controls.Add(txtDonVi);
             Controls.Add(lblSoLuong);
             Controls.Add(numSoLuong);
             Controls.Add(btnLuu);
@@ -153,6 +173,7 @@
             Font = new Font("Segoe UI", 12F);
             Name = "frmThemNguyenLieu";
             StartPosition = FormStartPosition.CenterParent;
+            Load += frmThemNguyenLieu_Load;
             ((System.ComponentModel.ISupportInitialize)numSoLuong).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -166,11 +187,13 @@
         private System.Windows.Forms.Label lblSoLuong;
         private System.Windows.Forms.TextBox txtMaNL;
         private System.Windows.Forms.TextBox txtTenNL;
-        private System.Windows.Forms.TextBox txtDonVi;
         private System.Windows.Forms.NumericUpDown numSoLuong;
         private System.Windows.Forms.Button btnLuu;
         private System.Windows.Forms.Button btnHuy;
 
         #endregion
+
+        private ComboBox cboDonVi;
+        private Button btnThemDonVi;
     }
 }
