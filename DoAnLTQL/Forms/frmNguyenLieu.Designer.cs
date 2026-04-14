@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCaPhe.Forms
+namespace QuanLyQuanCaPhe.Forms
 {
     partial class frmNguyenLieu
     {
@@ -47,6 +47,8 @@
             TenNL = new DataGridViewTextBoxColumn();
             TenDonVi = new DataGridViewTextBoxColumn();
             SoLuongTon = new DataGridViewTextBoxColumn();
+            btnNhap = new Button();
+            btnXuat = new Button();
             pnlHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelControl.SuspendLayout();
@@ -60,7 +62,7 @@
             pnlHeader.Controls.Add(lblQLNL);
             pnlHeader.Location = new Point(1, 1);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1515, 77);
+            pnlHeader.Size = new Size(1691, 77);
             pnlHeader.TabIndex = 2;
             // 
             // pictureBox1
@@ -88,6 +90,8 @@
             // 
             panelControl.BackColor = Color.FromArgb(246, 236, 210);
             panelControl.Controls.Add(btnTaiLai);
+            panelControl.Controls.Add(btnXuat);
+            panelControl.Controls.Add(btnNhap);
             panelControl.Controls.Add(btnXoa);
             panelControl.Controls.Add(btnDieuChinh);
             panelControl.Controls.Add(btnSua);
@@ -97,7 +101,7 @@
             panelControl.Controls.Add(btnQuayLai);
             panelControl.Location = new Point(7, 84);
             panelControl.Name = "panelControl";
-            panelControl.Size = new Size(1498, 70);
+            panelControl.Size = new Size(1674, 70);
             panelControl.TabIndex = 3;
             // 
             // btnTaiLai
@@ -198,12 +202,13 @@
             btnQuayLai.BackColor = Color.FromArgb(224, 224, 224);
             btnQuayLai.FlatStyle = FlatStyle.Flat;
             btnQuayLai.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnQuayLai.Location = new Point(1347, 10);
+            btnQuayLai.Location = new Point(1523, 10);
             btnQuayLai.Name = "btnQuayLai";
             btnQuayLai.Size = new Size(127, 47);
             btnQuayLai.TabIndex = 8;
             btnQuayLai.Text = "Quay lại";
             btnQuayLai.UseVisualStyleBackColor = false;
+            btnQuayLai.Click += btnQuayLai_Click;
             // 
             // contextMenuStrip1
             // 
@@ -223,7 +228,7 @@
             dtgvNguyenLieu.Name = "dtgvNguyenLieu";
             dtgvNguyenLieu.RowHeadersWidth = 51;
             dtgvNguyenLieu.RowTemplate.Height = 24;
-            dtgvNguyenLieu.Size = new Size(1498, 404);
+            dtgvNguyenLieu.Size = new Size(1674, 404);
             dtgvNguyenLieu.TabIndex = 5;
             dtgvNguyenLieu.CellFormatting += dtgvNguyenLieu_CellFormatting;
             // 
@@ -251,12 +256,42 @@
             SoLuongTon.HeaderText = "Số lượng tồn";
             SoLuongTon.Name = "SoLuongTon";
             // 
+            // btnNhap
+            // 
+            btnNhap.BackColor = Color.FromArgb(224, 224, 224);
+            btnNhap.FlatAppearance.BorderSize = 0;
+            btnNhap.FlatStyle = FlatStyle.Flat;
+            btnNhap.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNhap.ForeColor = Color.FromArgb(0, 192, 0);
+            btnNhap.Location = new Point(1220, 11);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(133, 47);
+            btnNhap.TabIndex = 12;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = false;
+            btnNhap.Click += btnNhap_Click;
+            // 
+            // btnXuat
+            // 
+            btnXuat.BackColor = Color.FromArgb(224, 224, 224);
+            btnXuat.FlatAppearance.BorderSize = 0;
+            btnXuat.FlatStyle = FlatStyle.Flat;
+            btnXuat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnXuat.ForeColor = Color.FromArgb(192, 64, 0);
+            btnXuat.Location = new Point(1372, 11);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(133, 47);
+            btnXuat.TabIndex = 12;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = false;
+            btnXuat.Click += btnXuat_Click;
+            // 
             // frmNguyenLieu
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(246, 236, 210);
-            ClientSize = new Size(1517, 594);
+            ClientSize = new Size(1693, 594);
             Controls.Add(dtgvNguyenLieu);
             Controls.Add(panelControl);
             Controls.Add(pnlHeader);
@@ -295,6 +330,8 @@
         private DataGridViewTextBoxColumn TenNL;
         private DataGridViewTextBoxColumn TenDonVi;
         private DataGridViewTextBoxColumn SoLuongTon;
+        private Button btnXuat;
+        private Button btnNhap;
     }
 }
 

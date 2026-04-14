@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 using QuanLyQuanCaPhe.Data;
 using static QuanLyQuanCaPhe.Data.KhachHang;
 
@@ -166,6 +167,169 @@ namespace QuanLyQuanCaPhe.Forms
         private void btnTaiLai_Click(object sender, EventArgs e)
         {
             frmKhachHang_Load(sender ,e);
+        }
+
+        private void btnXuatKH_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Title = "Xuất Khách Hàng",
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = $"KhachHang_{DateTime.Now:dd_MM_yyyy}.xlsx"
+            };
+
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                var data = context.KhachHang.ToList();
+
+                if (data.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.");
+                    return;
+                }
+
+                using (var wb = new XLWorkbook())
+                {
+                    var ws = wb.Worksheets.Add("KhachHang");
+
+                    // Header
+                    ws.Cell(1, 1).Value = "MaKH";
+                    ws.Cell(1, 2).Value = "TenKH";
+                    ws.Cell(1, 3).Value = "SDT";
+                    ws.Cell(1, 4).Value = "DiemTichLuy";
+
+                    var header = ws.Range(1, 1, 1, 4);
+                    header.Style.Font.Bold = true;
+                    header.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    int row = 2;
+                    foreach (var item in data)
+                    {
+                        ws.Cell(row, 1).Value = item.MaKH;
+                        ws.Cell(row, 2).Value = item.TenKH;
+                        ws.Cell(row, 3).Value = item.SDT;
+                        ws.Cell(row, 4).Value = item.DiemTichLuy;
+                        row++;
+                    }
+
+                    ws.Columns().AdjustToContents();
+                    wb.SaveAs(sfd.FileName);
+                }
+
+                MessageBox.Show("Xuất Excel Khách Hàng thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+
+        private void btnNhapKH_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = "Nhập Khách Hàng",
+                Filter = "Excel (*.xlsx)|*.xlsx|Excel (*.xls)|*.xls"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                using (var wb = new XLWorkbook(ofd.FileName))
+                {
+                    var ws = wb.Worksheet(1);
+                    var rows = ws.RowsUsed();
+
+                    bool isFirstRow = true;
+                    int insertCount = 0;
+                    int updateCount = 0;
+                    int skipCount = 0;
+
+                    foreach (var row in rows)
+                    {
+                        // Header check
+                        if (isFirstRow)
+                        {
+                            if (row.Cell(1).GetValue<string>().Trim() != "MaKH" ||
+                                row.Cell(2).GetValue<string>().Trim() != "TenKH" ||
+                                row.Cell(3).GetValue<string>().Trim() != "SDT" ||
+                                row.Cell(4).GetValue<string>().Trim() != "DiemTichLuy")
+                            {
+                                throw new Exception("File Excel không đúng format (MaKH | TenKH | SDT | DiemTichLuy)");
+                            }
+
+                            isFirstRow = false;
+                            continue;
+                        }
+
+                        // Đọc dữ liệu
+                        string maKH = row.Cell(1).GetValue<string>().Trim();
+                        string tenKH = row.Cell(2).GetValue<string>().Trim();
+                        string sdt = row.Cell(3).GetValue<string>().Trim();
+                        string diemStr = row.Cell(4).GetValue<string>().Trim();
+
+                        // 🔹 Validate
+                        if (string.IsNullOrWhiteSpace(maKH))
+                        {
+                            skipCount++;
+                            continue;
+                        }
+
+                        int? diem = null;
+                        if (int.TryParse(diemStr, out int d))
+                            diem = d;
+
+                        // Check tồn tại
+                        var existing = context.KhachHang
+                            .FirstOrDefault(x => x.MaKH == maKH);
+
+                        if (existing != null)
+                        {
+                            // UPDATE
+                            existing.TenKH = tenKH;
+                            existing.SDT = sdt;
+                            existing.DiemTichLuy = diem;
+                            updateCount++;
+                        }
+                        else
+                        {
+                            // INSERT
+                            context.KhachHang.Add(new KhachHang
+                            {
+                                MaKH = maKH,
+                                TenKH = tenKH,
+                                SDT = sdt,
+                                DiemTichLuy = diem
+                            });
+                            insertCount++;
+                        }
+                    }
+
+                    context.SaveChanges();
+
+                    MessageBox.Show(
+                        $"Insert: {insertCount}\nUpdate: {updateCount}\nBỏ qua: {skipCount}",
+                        "Kết quả import Khách Hàng",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    frmKhachHang_Load(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+        private void btnQuayLai_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

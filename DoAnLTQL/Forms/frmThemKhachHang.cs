@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using QuanLyQuanCaPhe.Data;
@@ -112,7 +112,10 @@ namespace QuanLyQuanCaPhe.Forms
             return "KH" + newNumber.ToString("D3");
         }
 
-
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
     }
 }

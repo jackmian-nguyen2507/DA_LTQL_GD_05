@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCaPhe.Forms
+namespace QuanLyQuanCaPhe.Forms
 {
     partial class frmSanPham
     {
@@ -46,6 +46,8 @@
             btnTaiLai = new Button();
             txtTimKiem = new TextBox();
             label1 = new Label();
+            btnNhap = new Button();
+            btnXuat = new Button();
             ((System.ComponentModel.ISupportInitialize)dtgvSanPham).BeginInit();
             pnlHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -142,6 +144,8 @@
             // pnlControl
             // 
             pnlControl.Controls.Add(btnQuayLai);
+            pnlControl.Controls.Add(btnXuat);
+            pnlControl.Controls.Add(btnNhap);
             pnlControl.Controls.Add(btnXoa);
             pnlControl.Controls.Add(btnSua);
             pnlControl.Controls.Add(btnThem);
@@ -168,6 +172,7 @@
             btnQuayLai.TabIndex = 7;
             btnQuayLai.Text = "Quay lại";
             btnQuayLai.UseVisualStyleBackColor = false;
+            btnQuayLai.Click += btnQuayLai_Click;
             // 
             // btnXoa
             // 
@@ -258,6 +263,40 @@
             label1.TabIndex = 5;
             label1.Text = "Tìm:";
             // 
+            // btnNhap
+            // 
+            btnNhap.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNhap.BackColor = Color.FromArgb(224, 224, 224);
+            btnNhap.FlatAppearance.BorderSize = 0;
+            btnNhap.FlatStyle = FlatStyle.Flat;
+            btnNhap.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNhap.ForeColor = Color.FromArgb(0, 192, 0);
+            btnNhap.Location = new Point(975, 21);
+            btnNhap.Margin = new Padding(2);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(117, 44);
+            btnNhap.TabIndex = 8;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = false;
+            btnNhap.Click += btnNhap_Click;
+            // 
+            // btnXuat
+            // 
+            btnXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnXuat.BackColor = Color.FromArgb(224, 224, 224);
+            btnXuat.FlatAppearance.BorderSize = 0;
+            btnXuat.FlatStyle = FlatStyle.Flat;
+            btnXuat.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnXuat.ForeColor = Color.FromArgb(192, 64, 0);
+            btnXuat.Location = new Point(1125, 21);
+            btnXuat.Margin = new Padding(2);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(117, 44);
+            btnXuat.TabIndex = 8;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = false;
+            btnXuat.Click += btnXuat_Click;
+            // 
             // frmSanPham
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -300,5 +339,7 @@
         private DataGridViewTextBoxColumn DonGia;
         private DataGridViewTextBoxColumn TrangThai;
         private DataGridViewImageColumn HinhAnh;
+        private Button btnXuat;
+        private Button btnNhap;
     }
 }

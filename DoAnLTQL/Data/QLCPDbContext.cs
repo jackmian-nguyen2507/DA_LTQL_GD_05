@@ -114,6 +114,20 @@ namespace QuanLyQuanCaPhe.Data
                       .WithMany(p => p.HoaDon)
                       .HasForeignKey(d => d.MaNV)
                       .OnDelete(DeleteBehavior.NoAction);
+
+                // INDEX
+                entity.HasIndex(e => e.MaNV)
+                      .HasDatabaseName("IX_HoaDon_MaNV_v2");
+
+                entity.HasIndex(e => e.MaKH)
+                      .HasDatabaseName("IX_HoaDon_MaKH_v2");
+
+                entity.HasIndex(e => e.idBan)
+                      .HasDatabaseName("IX_HoaDon_idBan_v2");
+
+                entity.HasIndex(e => e.NgayLap)
+                      .HasDatabaseName("IX_HoaDon_NgayLap_v2");
+
             });
             modelBuilder.Entity<ChiTietHoaDon>(entity =>
             {
@@ -151,13 +165,23 @@ namespace QuanLyQuanCaPhe.Data
                 entity.HasOne(d => d.HoaDon)
                       .WithMany(p => p.ChiTietHoaDon)
                       .HasForeignKey(d => d.MaHD)
-                      .OnDelete(DeleteBehavior.NoAction);
+                      .OnDelete(DeleteBehavior.Cascade);
+
 
                 // FK -> SanPham
                 entity.HasOne(d => d.SanPham)
                       .WithMany(p => p.ChiTietHoaDon)
                       .HasForeignKey(d => d.MaSP)
                       .OnDelete(DeleteBehavior.NoAction);
+
+                // INDEX
+                entity.HasIndex(e => e.MaHD)
+                      .HasDatabaseName("IX_CTHD_MaHD_v2");
+
+                // Composite
+                entity.HasIndex(e => new { e.MaHD, e.MaSP })
+                      .HasDatabaseName("IX_CTHD_MaHD_MaSP_v2");
+
             });
 
             modelBuilder.Entity<SanPham>(entity =>
@@ -189,6 +213,10 @@ namespace QuanLyQuanCaPhe.Data
                       .WithMany(l => l.SanPham)
                       .HasForeignKey(e => e.MaLoai)
                       .OnDelete(DeleteBehavior.NoAction);
+
+                // INDEX
+                entity.HasIndex(e => e.MaLoai)
+                      .HasDatabaseName("IX_SanPham_MaLoai_v2");
             });
 
             modelBuilder.Entity<LoaiSanPham>(entity =>
@@ -318,6 +346,16 @@ namespace QuanLyQuanCaPhe.Data
                       .WithMany(p => p.InventoryMovements)
                       .HasForeignKey(d => d.RefMaHD)
                       .OnDelete(DeleteBehavior.NoAction);
+
+                // INDEX
+                entity.HasIndex(e => e.MaNL)
+                      .HasDatabaseName("IX_IM_MaNL_v2");
+
+                entity.HasIndex(e => e.RefMaHD)
+                      .HasDatabaseName("IX_IM_RefMaHD_v2");
+
+                entity.HasIndex(e => e.CreatedAt)
+                      .HasDatabaseName("IX_IM_CreatedAt_v2");
             });
 
             modelBuilder.Entity<KhachHang>(entity =>

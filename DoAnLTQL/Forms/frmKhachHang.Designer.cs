@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCaPhe.Forms
+namespace QuanLyQuanCaPhe.Forms
 {
     partial class frmKhachHang
     {
@@ -32,6 +32,8 @@
             label1 = new Label();
             pnlControl = new Panel();
             btnQuayLai = new Button();
+            btnXuat = new Button();
+            btnNhap = new Button();
             btnXoa = new Button();
             btnSua = new Button();
             btnThem = new Button();
@@ -54,7 +56,7 @@
             pnlHeader.Controls.Add(label1);
             pnlHeader.Location = new Point(0, 1);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1377, 80);
+            pnlHeader.Size = new Size(1785, 80);
             pnlHeader.TabIndex = 3;
             // 
             // label1
@@ -71,6 +73,8 @@
             // pnlControl
             // 
             pnlControl.Controls.Add(btnQuayLai);
+            pnlControl.Controls.Add(btnXuat);
+            pnlControl.Controls.Add(btnNhap);
             pnlControl.Controls.Add(btnXoa);
             pnlControl.Controls.Add(btnSua);
             pnlControl.Controls.Add(btnThem);
@@ -79,7 +83,7 @@
             pnlControl.Controls.Add(label2);
             pnlControl.Location = new Point(12, 87);
             pnlControl.Name = "pnlControl";
-            pnlControl.Size = new Size(1365, 80);
+            pnlControl.Size = new Size(1773, 80);
             pnlControl.TabIndex = 7;
             // 
             // btnQuayLai
@@ -88,12 +92,43 @@
             btnQuayLai.FlatAppearance.BorderSize = 0;
             btnQuayLai.FlatStyle = FlatStyle.Flat;
             btnQuayLai.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnQuayLai.Location = new Point(1228, 14);
+            btnQuayLai.Location = new Point(1637, 13);
             btnQuayLai.Name = "btnQuayLai";
             btnQuayLai.Size = new Size(133, 45);
             btnQuayLai.TabIndex = 7;
             btnQuayLai.Text = "Quay lại";
             btnQuayLai.UseVisualStyleBackColor = false;
+            btnQuayLai.Click += btnQuayLai_Click;
+            // 
+            // btnXuat
+            // 
+            btnXuat.BackColor = Color.FromArgb(224, 224, 224);
+            btnXuat.FlatAppearance.BorderSize = 0;
+            btnXuat.FlatStyle = FlatStyle.Flat;
+            btnXuat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnXuat.ForeColor = Color.FromArgb(192, 64, 0);
+            btnXuat.Location = new Point(1421, 11);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(133, 47);
+            btnXuat.TabIndex = 8;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = false;
+            btnXuat.Click += btnXuatKH_Click;
+            // 
+            // btnNhap
+            // 
+            btnNhap.BackColor = Color.FromArgb(224, 224, 224);
+            btnNhap.FlatAppearance.BorderSize = 0;
+            btnNhap.FlatStyle = FlatStyle.Flat;
+            btnNhap.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNhap.ForeColor = Color.Green;
+            btnNhap.Location = new Point(1226, 11);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(133, 47);
+            btnNhap.TabIndex = 8;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = false;
+            btnNhap.Click += btnNhapKH_Click;
             // 
             // btnXoa
             // 
@@ -186,7 +221,7 @@
             dtgvKhachHang.Name = "dtgvKhachHang";
             dtgvKhachHang.RowHeadersWidth = 51;
             dtgvKhachHang.RowTemplate.Height = 24;
-            dtgvKhachHang.Size = new Size(1364, 430);
+            dtgvKhachHang.Size = new Size(1757, 430);
             dtgvKhachHang.TabIndex = 8;
             // 
             // MaKH
@@ -218,7 +253,7 @@
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(246, 236, 210);
-            ClientSize = new Size(1385, 623);
+            ClientSize = new Size(1782, 623);
             Controls.Add(dtgvKhachHang);
             Controls.Add(pnlControl);
             Controls.Add(pnlHeader);
@@ -253,6 +288,8 @@
         private DataGridViewTextBoxColumn TenKH;
         private DataGridViewTextBoxColumn SDT;
         private DataGridViewTextBoxColumn DiemTichLuy;
+        private Button btnXuat;
+        private Button btnNhap;
     }
 }
 

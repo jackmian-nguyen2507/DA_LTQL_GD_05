@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace QuanLyQuanCaPhe.Forms
 {
@@ -25,7 +25,7 @@ namespace QuanLyQuanCaPhe.Forms
             btnTaiLai = new Button();
             btnXoa = new Button();
             btnInPDF = new Button();
-            button1 = new Button();
+            btnXuat = new Button();
             btnQuayLai = new Button();
             dtgvHoaDon = new DataGridView();
             MaHD = new DataGridViewTextBoxColumn();
@@ -36,6 +36,7 @@ namespace QuanLyQuanCaPhe.Forms
             TongTien = new DataGridViewTextBoxColumn();
             TrangThai = new DataGridViewTextBoxColumn();
             XemChiTiet = new DataGridViewButtonColumn();
+            btnNhap = new Button();
             pnlHeader.SuspendLayout();
             pnlMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtgvHoaDon).BeginInit();
@@ -66,9 +67,10 @@ namespace QuanLyQuanCaPhe.Forms
             // 
             pnlMenu.BackColor = Color.FromArgb(246, 236, 210);
             pnlMenu.Controls.Add(btnTaiLai);
+            pnlMenu.Controls.Add(btnNhap);
             pnlMenu.Controls.Add(btnXoa);
             pnlMenu.Controls.Add(btnInPDF);
-            pnlMenu.Controls.Add(button1);
+            pnlMenu.Controls.Add(btnXuat);
             pnlMenu.Controls.Add(btnQuayLai);
             pnlMenu.Dock = DockStyle.Top;
             pnlMenu.Location = new Point(0, 80);
@@ -89,6 +91,7 @@ namespace QuanLyQuanCaPhe.Forms
             btnTaiLai.TabIndex = 0;
             btnTaiLai.Text = "Tải lại";
             btnTaiLai.UseVisualStyleBackColor = false;
+            btnTaiLai.Click += btnTaiLai_Click;
             // 
             // btnXoa
             // 
@@ -97,12 +100,13 @@ namespace QuanLyQuanCaPhe.Forms
             btnXoa.FlatStyle = FlatStyle.Flat;
             btnXoa.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnXoa.ForeColor = Color.Red;
-            btnXoa.Location = new Point(658, 23);
+            btnXoa.Location = new Point(454, 23);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(175, 44);
             btnXoa.TabIndex = 1;
             btnXoa.Text = "Xóa";
             btnXoa.UseVisualStyleBackColor = false;
+            btnXoa.Click += btnXoa_Click;
             // 
             // btnInPDF
             // 
@@ -111,26 +115,27 @@ namespace QuanLyQuanCaPhe.Forms
             btnInPDF.FlatStyle = FlatStyle.Flat;
             btnInPDF.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnInPDF.ForeColor = Color.FromArgb(255, 128, 0);
-            btnInPDF.Location = new Point(449, 22);
+            btnInPDF.Location = new Point(250, 23);
             btnInPDF.Name = "btnInPDF";
             btnInPDF.Size = new Size(175, 44);
             btnInPDF.TabIndex = 2;
             btnInPDF.Text = "Xuất PDF";
             btnInPDF.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // btnXuat
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.BackColor = Color.FromArgb(224, 224, 224);
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            button1.ForeColor = Color.DarkGreen;
-            button1.Location = new Point(234, 22);
-            button1.Name = "button1";
-            button1.Size = new Size(175, 45);
-            button1.TabIndex = 3;
-            button1.Text = "Xuất excel";
-            button1.UseVisualStyleBackColor = false;
+            btnXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnXuat.BackColor = Color.FromArgb(224, 224, 224);
+            btnXuat.FlatStyle = FlatStyle.Flat;
+            btnXuat.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnXuat.ForeColor = Color.FromArgb(192, 64, 0);
+            btnXuat.Location = new Point(885, 22);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(175, 45);
+            btnXuat.TabIndex = 3;
+            btnXuat.Text = "Xuất excel";
+            btnXuat.UseVisualStyleBackColor = false;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnQuayLai
             // 
@@ -144,6 +149,7 @@ namespace QuanLyQuanCaPhe.Forms
             btnQuayLai.TabIndex = 6;
             btnQuayLai.Text = "Quay lại";
             btnQuayLai.UseVisualStyleBackColor = false;
+            btnQuayLai.Click += btnQuayLai_Click;
             // 
             // dtgvHoaDon
             // 
@@ -209,6 +215,21 @@ namespace QuanLyQuanCaPhe.Forms
             XemChiTiet.Text = "Xem";
             XemChiTiet.UseColumnTextForButtonValue = true;
             // 
+            // btnNhap
+            // 
+            btnNhap.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNhap.BackColor = Color.FromArgb(224, 224, 224);
+            btnNhap.FlatStyle = FlatStyle.Flat;
+            btnNhap.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnNhap.ForeColor = Color.Green;
+            btnNhap.Location = new Point(660, 25);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(175, 44);
+            btnNhap.TabIndex = 1;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = false;
+            btnNhap.Click += btnNhap_Click;
+            // 
             // frmHoaDon
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
@@ -239,7 +260,7 @@ namespace QuanLyQuanCaPhe.Forms
         private System.Windows.Forms.Button btnInPDF;
         private System.Windows.Forms.Button btnQuayLai;
         private System.Windows.Forms.DataGridView dtgvHoaDon;
-        private Button button1;
+        private Button btnXuat;
         private DataGridViewTextBoxColumn MaHD;
         private DataGridViewTextBoxColumn NgayLap;
         private DataGridViewTextBoxColumn TenKH;
@@ -248,5 +269,6 @@ namespace QuanLyQuanCaPhe.Forms
         private DataGridViewTextBoxColumn TongTien;
         private DataGridViewTextBoxColumn TrangThai;
         private DataGridViewButtonColumn XemChiTiet;
+        private Button btnNhap;
     }
 }

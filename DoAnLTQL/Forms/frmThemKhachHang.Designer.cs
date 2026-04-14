@@ -1,4 +1,4 @@
-﻿namespace QuanLyQuanCaPhe.Forms
+namespace QuanLyQuanCaPhe.Forms
 {
     partial class frmThemKhachHang
     {
@@ -129,6 +129,7 @@
             btnCancel.TabIndex = 11;
             btnCancel.Text = "Hủy";
             btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.Click += btnCancel_Click;
             // 
             // frmThemKhachHang
             // 

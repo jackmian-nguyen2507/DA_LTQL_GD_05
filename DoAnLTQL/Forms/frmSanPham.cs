@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 using QuanLyQuanCaPhe.Data;
 using static QuanLyQuanCaPhe.Data.SanPham;
 
@@ -224,6 +225,170 @@ namespace QuanLyQuanCaPhe.Forms
                 .ToList();
 
             BindData(result);
+        }
+
+        private void btnNhap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = "Nhập Sản Phẩm",
+                Filter = "Excel (*.xlsx)|*.xlsx|Excel (*.xls)|*.xls"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                using (var wb = new XLWorkbook(ofd.FileName))
+                {
+                    var ws = wb.Worksheet(1);
+                    var rows = ws.RowsUsed();
+
+                    bool isFirstRow = true;
+                    int insertCount = 0;
+                    int updateCount = 0;
+                    int skipCount = 0;
+
+                    foreach (var row in rows)
+                    {
+                        if (isFirstRow)
+                        {
+                            if (row.Cell(1).GetValue<string>().Trim() != "MaSP" ||
+                                row.Cell(2).GetValue<string>().Trim() != "TenSP" ||
+                                row.Cell(3).GetValue<string>().Trim() != "MaLoai" ||
+                                row.Cell(4).GetValue<string>().Trim() != "DonGia" ||
+                                row.Cell(5).GetValue<string>().Trim() != "TrangThai" ||
+                                row.Cell(6).GetValue<string>().Trim() != "ImagePath")
+                            {
+                                throw new Exception("File Excel không đúng format (MaSP | TenSP | MaLoai | DonGia | TrangThai | ImagePath)");
+                            }
+                            isFirstRow = false;
+                            continue;
+                        }
+
+                        string maSP = row.Cell(1).GetValue<string>().Trim();
+                        string tenSP = row.Cell(2).GetValue<string>().Trim();
+                        string maLoaiStr = row.Cell(3).GetValue<string>().Trim();
+                        string donGiaStr = row.Cell(4).GetValue<string>().Trim();
+                        string trangThaiStr = row.Cell(5).GetValue<string>().Trim();
+                        string imagePath = row.Cell(6).GetValue<string>().Trim();
+
+                        if (string.IsNullOrWhiteSpace(maSP))
+                        {
+                            skipCount++;
+                            continue;
+                        }
+
+                        int? maLoai = null;
+                        if (int.TryParse(maLoaiStr, out int ml)) maLoai = ml;
+
+                        decimal donGia = 0;
+                        if (decimal.TryParse(donGiaStr, out decimal dg)) donGia = dg;
+
+                        string trangThai = trangThaiStr;
+
+                        var existing = context.SanPham.FirstOrDefault(x => x.MaSP == maSP);
+
+                        if (existing != null)
+                        {
+                            existing.TenSP = tenSP;
+                            if (maLoai.HasValue) existing.MaLoai = maLoai.Value;
+                            existing.DonGia = donGia;
+                            existing.TrangThai = trangThai;
+                            existing.ImagePath = imagePath;
+                            updateCount++;
+                        }
+                        else
+                        {
+                            context.SanPham.Add(new QuanLyQuanCaPhe.Data.SanPham
+                            {
+                                MaSP = maSP,
+                                TenSP = tenSP,
+                                MaLoai = maLoai ?? 1, // fallback
+                                DonGia = donGia,
+                                TrangThai = trangThai,
+                                ImagePath = imagePath
+                            });
+                            insertCount++;
+                        }
+                    }
+
+                    context.SaveChanges();
+                    MessageBox.Show($"Insert: {insertCount}\nUpdate: {updateCount}\nBỏ qua: {skipCount}", "Kết quả import Sản Phẩm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadSanPham();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Title = "Xuất Sản Phẩm",
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = $"SanPham_{DateTime.Now:dd_MM_yyyy}.xlsx"
+            };
+
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                var data = context.SanPham.ToList();
+
+                if (data.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.");
+                    return;
+                }
+
+                using (var wb = new XLWorkbook())
+                {
+                    var ws = wb.Worksheets.Add("SanPham");
+
+                    ws.Cell(1, 1).Value = "MaSP";
+                    ws.Cell(1, 2).Value = "TenSP";
+                    ws.Cell(1, 3).Value = "MaLoai";
+                    ws.Cell(1, 4).Value = "DonGia";
+                    ws.Cell(1, 5).Value = "TrangThai";
+                    ws.Cell(1, 6).Value = "ImagePath";
+
+                    var header = ws.Range(1, 1, 1, 6);
+                    header.Style.Font.Bold = true;
+                    header.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    int row = 2;
+                    foreach (var item in data)
+                    {
+                        ws.Cell(row, 1).Value = item.MaSP;
+                        ws.Cell(row, 2).Value = item.TenSP;
+                        ws.Cell(row, 3).Value = item.MaLoai;
+                        ws.Cell(row, 4).Value = item.DonGia;
+                        ws.Cell(row, 5).Value = item.TrangThai;
+                        ws.Cell(row, 6).Value = item.ImagePath;
+                        row++;
+                    }
+
+                    ws.Columns().AdjustToContents();
+                    wb.SaveAs(sfd.FileName);
+                }
+
+                MessageBox.Show("Xuất Excel Sản Phẩm thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+
+        private void btnQuayLai_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

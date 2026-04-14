@@ -12,13 +12,13 @@ namespace QuanLyQuanCaPhe.Data
     {
         public string MaSP { get; set; } = null!;
         public string TenSP { get; set; } = null!;
-        public int MaLoai { get; set; }
-        public virtual LoaiSanPham LoaiSanPham { get; set; }
+        
+        
         public decimal DonGia { get; set; }
         public string? TrangThai { get; set; }
         public string? ImagePath { get; set; }
-
-
+        public int MaLoai { get; set; }
+        public virtual LoaiSanPham LoaiSanPham { get; set; }
         public virtual ObservableCollectionListSource<ChiTietHoaDon> ChiTietHoaDon { get; } = new();
         public virtual ObservableCollectionListSource<CongThuc> CongThuc { get; } = new();
 

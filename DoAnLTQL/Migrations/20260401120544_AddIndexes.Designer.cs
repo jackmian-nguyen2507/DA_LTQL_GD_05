@@ -12,8 +12,8 @@ using QuanLyQuanCaPhe.Data;
 namespace QuanLyQuanCaPhe.Migrations
 {
     [DbContext(typeof(QLCPDbContext))]
-    [Migration("20260129035327_KhoiTaoCSDL")]
-    partial class KhoiTaoCSDL
+    [Migration("20260401120544_AddIndexes")]
+    partial class AddIndexes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,9 +179,13 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("ChiTietID");
 
-                    b.HasIndex("MaHD");
+                    b.HasIndex("MaHD")
+                        .HasDatabaseName("IX_CTHD_MaHD_v2");
 
                     b.HasIndex("MaSP");
+
+                    b.HasIndex("MaHD", "MaSP")
+                        .HasDatabaseName("IX_CTHD_MaHD_MaSP_v2");
 
                     b.ToTable("ChiTietHoaDon", (string)null);
                 });
@@ -212,6 +216,24 @@ namespace QuanLyQuanCaPhe.Migrations
                     b.HasIndex("MaSP");
 
                     b.ToTable("CongThuc", (string)null);
+                });
+
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.DonVi", b =>
+                {
+                    b.Property<int>("MaDonVi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaDonVi"));
+
+                    b.Property<string>("TenDonVi")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MaDonVi");
+
+                    b.ToTable("DonVi", (string)null);
                 });
 
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.HoaDon", b =>
@@ -256,11 +278,17 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("MaHD");
 
-                    b.HasIndex("MaKH");
+                    b.HasIndex("MaKH")
+                        .HasDatabaseName("IX_HoaDon_MaKH_v2");
 
-                    b.HasIndex("MaNV");
+                    b.HasIndex("MaNV")
+                        .HasDatabaseName("IX_HoaDon_MaNV_v2");
 
-                    b.HasIndex("idBan");
+                    b.HasIndex("NgayLap")
+                        .HasDatabaseName("IX_HoaDon_NgayLap_v2");
+
+                    b.HasIndex("idBan")
+                        .HasDatabaseName("IX_HoaDon_idBan_v2");
 
                     b.ToTable("HoaDon", (string)null);
                 });
@@ -294,9 +322,14 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("MovementID");
 
-                    b.HasIndex("MaNL");
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_IM_CreatedAt_v2");
 
-                    b.HasIndex("RefMaHD");
+                    b.HasIndex("MaNL")
+                        .HasDatabaseName("IX_IM_MaNL_v2");
+
+                    b.HasIndex("RefMaHD")
+                        .HasDatabaseName("IX_IM_RefMaHD_v2");
 
                     b.ToTable("InventoryMovements", (string)null);
                 });
@@ -324,14 +357,31 @@ namespace QuanLyQuanCaPhe.Migrations
                     b.ToTable("KhachHang", (string)null);
                 });
 
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.LoaiSanPham", b =>
+                {
+                    b.Property<int>("MaLoai")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLoai"));
+
+                    b.Property<string>("TenLoai")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("MaLoai");
+
+                    b.ToTable("LoaiSanPham", (string)null);
+                });
+
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.NguyenLieu", b =>
                 {
                     b.Property<string>("MaNL")
                         .HasColumnType("char(6)");
 
-                    b.Property<string>("DonVi")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                    b.Property<int>("MaDonVi")
+                        .HasColumnType("int");
 
                     b.Property<decimal?>("SoLuongTon")
                         .ValueGeneratedOnAdd()
@@ -343,6 +393,8 @@ namespace QuanLyQuanCaPhe.Migrations
                         .HasColumnType("nvarchar(300)");
 
                     b.HasKey("MaNL");
+
+                    b.HasIndex("MaDonVi");
 
                     b.ToTable("NguyenLieu", (string)null);
                 });
@@ -397,9 +449,8 @@ namespace QuanLyQuanCaPhe.Migrations
                         .HasMaxLength(510)
                         .HasColumnType("nvarchar(510)");
 
-                    b.Property<string>("LoaiSP")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("MaLoai")
+                        .HasColumnType("int");
 
                     b.Property<string>("TenSP")
                         .IsRequired()
@@ -413,6 +464,9 @@ namespace QuanLyQuanCaPhe.Migrations
                         .HasDefaultValue("Còn bán");
 
                     b.HasKey("MaSP");
+
+                    b.HasIndex("MaLoai")
+                        .HasDatabaseName("IX_SanPham_MaLoai_v2");
 
                     b.ToTable("SanPham", (string)null);
                 });
@@ -485,7 +539,7 @@ namespace QuanLyQuanCaPhe.Migrations
                     b.HasOne("QuanLyQuanCaPhe.Data.HoaDon", "HoaDon")
                         .WithMany("ChiTietHoaDon")
                         .HasForeignKey("MaHD")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("QuanLyQuanCaPhe.Data.SanPham", "SanPham")
@@ -562,6 +616,28 @@ namespace QuanLyQuanCaPhe.Migrations
                     b.Navigation("NguyenLieu");
                 });
 
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.NguyenLieu", b =>
+                {
+                    b.HasOne("QuanLyQuanCaPhe.Data.DonVi", "DonVi")
+                        .WithMany("NguyenLieu")
+                        .HasForeignKey("MaDonVi")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DonVi");
+                });
+
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.SanPham", b =>
+                {
+                    b.HasOne("QuanLyQuanCaPhe.Data.LoaiSanPham", "LoaiSanPham")
+                        .WithMany("SanPham")
+                        .HasForeignKey("MaLoai")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("LoaiSanPham");
+                });
+
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.TaiKhoan", b =>
                 {
                     b.HasOne("QuanLyQuanCaPhe.Data.NhanVien", "NhanVien")
@@ -582,6 +658,11 @@ namespace QuanLyQuanCaPhe.Migrations
                     b.Navigation("ChamCong");
                 });
 
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.DonVi", b =>
+                {
+                    b.Navigation("NguyenLieu");
+                });
+
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.HoaDon", b =>
                 {
                     b.Navigation("ChiTietHoaDon");
@@ -592,6 +673,11 @@ namespace QuanLyQuanCaPhe.Migrations
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.KhachHang", b =>
                 {
                     b.Navigation("HoaDon");
+                });
+
+            modelBuilder.Entity("QuanLyQuanCaPhe.Data.LoaiSanPham", b =>
+                {
+                    b.Navigation("SanPham");
                 });
 
             modelBuilder.Entity("QuanLyQuanCaPhe.Data.NguyenLieu", b =>

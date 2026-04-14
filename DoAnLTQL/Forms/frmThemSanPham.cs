@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -207,7 +207,7 @@ namespace QuanLyQuanCaPhe.Forms
 
         private void btnHuy_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }

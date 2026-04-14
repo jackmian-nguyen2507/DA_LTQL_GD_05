@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 using QuanLyQuanCaPhe.Data;
 
 namespace QuanLyQuanCaPhe.Forms
@@ -112,6 +112,138 @@ namespace QuanLyQuanCaPhe.Forms
             {
                 btnThem.PerformClick();
             }
-        }   
+        }
+
+        private void btnNhap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = "Nhập Đơn Vị",
+                Filter = "Excel (*.xlsx)|*.xlsx|Excel (*.xls)|*.xls"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                using (var wb = new XLWorkbook(ofd.FileName))
+                {
+                    var ws = wb.Worksheet(1);
+                    var rows = ws.RowsUsed();
+
+                    bool isFirstRow = true;
+                    int insertCount = 0;
+                    int updateCount = 0;
+                    int skipCount = 0;
+
+                    foreach (var row in rows)
+                    {
+                        if (isFirstRow)
+                        {
+                            if (row.Cell(1).GetValue<string>().Trim() != "MaDonVi" ||
+                                row.Cell(2).GetValue<string>().Trim() != "TenDonVi")
+                            {
+                                throw new Exception("File Excel không đúng format (MaDonVi | TenDonVi)");
+                            }
+                            isFirstRow = false;
+                            continue;
+                        }
+
+                        string maDonViStr = row.Cell(1).GetValue<string>().Trim();
+                        string tenDonVi = row.Cell(2).GetValue<string>().Trim();
+
+                        if (string.IsNullOrWhiteSpace(tenDonVi))
+                        {
+                            skipCount++;
+                            continue;
+                        }
+
+                        int maDonVi;
+                        bool hasMaDonVi = int.TryParse(maDonViStr, out maDonVi);
+
+                        if (hasMaDonVi)
+                        {
+                            var existing = context.DonVi.FirstOrDefault(x => x.MaDonVi == maDonVi);
+                            if (existing != null)
+                            {
+                                existing.TenDonVi = tenDonVi;
+                                updateCount++;
+                            }
+                            else
+                            {
+                                context.DonVi.Add(new DonVi { TenDonVi = tenDonVi });
+                                insertCount++;
+                            }
+                        }
+                        else
+                        {
+                            context.DonVi.Add(new DonVi { TenDonVi = tenDonVi });
+                            insertCount++;
+                        }
+                    }
+
+                    context.SaveChanges();
+                    MessageBox.Show($"Insert: {insertCount}\nUpdate: {updateCount}\nBỏ qua: {skipCount}", "Kết quả import", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDonVi();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Title = "Xuất Đơn Vị",
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = $"DonVi_{DateTime.Now:dd_MM_yyyy}.xlsx"
+            };
+
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                var data = context.DonVi.ToList();
+                if (data.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.");
+                    return;
+                }
+
+                using (var wb = new XLWorkbook())
+                {
+                    var ws = wb.Worksheets.Add("DonVi");
+
+                    ws.Cell(1, 1).Value = "MaDonVi";
+                    ws.Cell(1, 2).Value = "TenDonVi";
+
+                    var header = ws.Range(1, 1, 1, 2);
+                    header.Style.Font.Bold = true;
+                    header.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    int row = 2;
+                    foreach (var item in data)
+                    {
+                        ws.Cell(row, 1).Value = item.MaDonVi;
+                        ws.Cell(row, 2).Value = item.TenDonVi;
+                        row++;
+                    }
+
+                    ws.Columns().AdjustToContents();
+                    wb.SaveAs(sfd.FileName);
+                }
+
+                MessageBox.Show("Xuất Excel thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
+        }
     }
 }

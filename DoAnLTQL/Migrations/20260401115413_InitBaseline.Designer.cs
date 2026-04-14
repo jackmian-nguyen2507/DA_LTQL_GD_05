@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyQuanCaPhe.Data;
 
@@ -11,9 +12,11 @@ using QuanLyQuanCaPhe.Data;
 namespace QuanLyQuanCaPhe.Migrations
 {
     [DbContext(typeof(QLCPDbContext))]
-    partial class QLCPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260401115413_InitBaseline")]
+    partial class InitBaseline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,13 +179,11 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("ChiTietID");
 
-                    b.HasIndex("MaHD")
-                        .HasDatabaseName("IX_CTHD_MaHD_v2");
+                    b.HasIndex("MaHD");
 
                     b.HasIndex("MaSP");
 
-                    b.HasIndex("MaHD", "MaSP")
-                        .HasDatabaseName("IX_CTHD_MaHD_MaSP_v2");
+                    b.HasIndex("MaHD", "MaSP");
 
                     b.ToTable("ChiTietHoaDon", (string)null);
                 });
@@ -275,17 +276,13 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("MaHD");
 
-                    b.HasIndex("MaKH")
-                        .HasDatabaseName("IX_HoaDon_MaKH_v2");
+                    b.HasIndex("MaKH");
 
-                    b.HasIndex("MaNV")
-                        .HasDatabaseName("IX_HoaDon_MaNV_v2");
+                    b.HasIndex("MaNV");
 
-                    b.HasIndex("NgayLap")
-                        .HasDatabaseName("IX_HoaDon_NgayLap_v2");
+                    b.HasIndex("NgayLap");
 
-                    b.HasIndex("idBan")
-                        .HasDatabaseName("IX_HoaDon_idBan_v2");
+                    b.HasIndex("idBan");
 
                     b.ToTable("HoaDon", (string)null);
                 });
@@ -319,14 +316,11 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("MovementID");
 
-                    b.HasIndex("CreatedAt")
-                        .HasDatabaseName("IX_IM_CreatedAt_v2");
+                    b.HasIndex("CreatedAt");
 
-                    b.HasIndex("MaNL")
-                        .HasDatabaseName("IX_IM_MaNL_v2");
+                    b.HasIndex("MaNL");
 
-                    b.HasIndex("RefMaHD")
-                        .HasDatabaseName("IX_IM_RefMaHD_v2");
+                    b.HasIndex("RefMaHD");
 
                     b.ToTable("InventoryMovements", (string)null);
                 });
@@ -462,8 +456,7 @@ namespace QuanLyQuanCaPhe.Migrations
 
                     b.HasKey("MaSP");
 
-                    b.HasIndex("MaLoai")
-                        .HasDatabaseName("IX_SanPham_MaLoai_v2");
+                    b.HasIndex("MaLoai");
 
                     b.ToTable("SanPham", (string)null);
                 });

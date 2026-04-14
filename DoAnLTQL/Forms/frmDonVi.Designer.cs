@@ -36,6 +36,8 @@
             TenDonVi = new DataGridViewTextBoxColumn();
             btnXoa = new Button();
             btnDong = new Button();
+            btnNhap = new Button();
+            btnXuat = new Button();
             grbDanhSachDonVi.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dtgvDonVi).BeginInit();
             SuspendLayout();
@@ -62,7 +64,7 @@
             // grbDanhSachDonVi
             // 
             grbDanhSachDonVi.Controls.Add(dtgvDonVi);
-            grbDanhSachDonVi.Location = new Point(14, 78);
+            grbDanhSachDonVi.Location = new Point(14, 131);
             grbDanhSachDonVi.Name = "grbDanhSachDonVi";
             grbDanhSachDonVi.Size = new Size(398, 237);
             grbDanhSachDonVi.TabIndex = 2;
@@ -96,7 +98,7 @@
             // 
             // btnXoa
             // 
-            btnXoa.Location = new Point(46, 330);
+            btnXoa.Location = new Point(46, 383);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new Size(118, 37);
             btnXoa.TabIndex = 3;
@@ -106,7 +108,7 @@
             // 
             // btnDong
             // 
-            btnDong.Location = new Point(254, 330);
+            btnDong.Location = new Point(254, 383);
             btnDong.Name = "btnDong";
             btnDong.Size = new Size(118, 37);
             btnDong.TabIndex = 3;
@@ -114,11 +116,33 @@
             btnDong.UseVisualStyleBackColor = true;
             btnDong.Click += btnDong_Click;
             // 
+            // btnNhap
+            // 
+            btnNhap.Location = new Point(42, 75);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(134, 36);
+            btnNhap.TabIndex = 4;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
+            // 
+            // btnXuat
+            // 
+            btnXuat.Location = new Point(254, 75);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(134, 36);
+            btnXuat.TabIndex = 4;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
+            // 
             // frmDonVi
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(424, 388);
+            ClientSize = new Size(424, 435);
+            Controls.Add(btnXuat);
+            Controls.Add(btnNhap);
             Controls.Add(btnDong);
             Controls.Add(btnXoa);
             Controls.Add(grbDanhSachDonVi);
@@ -145,5 +169,7 @@
         private Button btnDong;
         private DataGridViewTextBoxColumn MaDonVi;
         private DataGridViewTextBoxColumn TenDonVi;
+        private Button btnNhap;
+        private Button btnXuat;
     }
 }
